@@ -127,5 +127,13 @@ for (_, row), y in zip(top10.iterrows(), y_positions):
         va='center'
     )
 
-plt.tight_layout()
+fig.text(
+    0.5, 0.02,
+    'Ventas en millones de unidades | Fuente: Video Game Sales 2024 - asaniczka',
+    ha='center',
+    va='bottom',
+    fontsize=10
+)
+
+plt.tight_layout(rect=[0, 0.05, 1, 1])
 plt.show()
