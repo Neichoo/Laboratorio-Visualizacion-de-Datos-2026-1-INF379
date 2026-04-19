@@ -43,7 +43,6 @@ fig.update_layout(
     ]
 )
 
-# 🔥 Texto en nodos
 fig.update_traces(
     domain=dict(x=[0.0, 0.75]),
     texttemplate="%{label} %{value:.1f}",
