@@ -8,18 +8,11 @@ from matplotlib import transforms
 
 plt.rcParams["font.family"] = "Arial"
 plt.rcParams["font.size"] = 14
-# =========================
-# CARGAR CSV
-# =========================
 
 archivo = "../../data/Encuesta_videojuegos.csv"
 
 df = pd.read_csv(archivo)
 df = df.drop(columns=["Marca temporal"], errors="ignore")
-
-# =========================
-# FUNCIONES AUXILIARES
-# =========================
 
 def separar_valores(columna):
     valores = []
@@ -36,11 +29,6 @@ def escalar(valor, minimo, maximo, salida_min, salida_max):
         return (salida_min + salida_max) / 2
 
     return salida_min + (valor - minimo) * (salida_max - salida_min) / (maximo - minimo)
-
-
-# =====================================================
-# DATOS
-# =====================================================
 
 col_genero = "¿Género favorito de videojuego?"
 col_modalidad = "Qué modalidad de juego prefieres?"
@@ -67,10 +55,6 @@ for generos, modalidades in zip(lista_generos, lista_modalidades):
             conteo_modalidades_por_genero[nodo_modalidad] += 1
             conteo_relaciones[(genero, nodo_modalidad)] += 1
 
-# =====================================================
-# GRAFO
-# =====================================================
-
 G = nx.Graph()
 
 for genero, modalidades in relaciones.items():
@@ -93,11 +77,6 @@ for genero, modalidades in relaciones.items():
             peso=conteo_relaciones[(genero, nodo_modalidad)]
         )
 
-# =====================================================
-# SORT CÍRCULOS INTERNOS
-# Géneros ordenados de mayor a menor frecuencia
-# =====================================================
-
 generos = sorted(
     relaciones.keys(),
     key=lambda g: conteo_generos[g],
@@ -105,10 +84,6 @@ generos = sorted(
 )
 
 num_generos = len(generos)
-
-# =====================================================
-# POSICIONES RADIALES
-# =====================================================
 
 pos = {}
 
@@ -133,12 +108,6 @@ sector_total = (2 * np.pi) / num_generos
 margen_sector = sector_total * 0.15
 
 angulos_modalidades = {}
-
-# =====================================================
-# SORT CÍRCULOS/BARRAS EXTERNAS
-# Modalidades ordenadas de mayor a menor frecuencia
-# dentro de cada género
-# =====================================================
 
 for angulo_genero, genero in zip(angulos_generos, generos):
 
@@ -181,10 +150,6 @@ for angulo_genero, genero in zip(angulos_generos, generos):
         pos[nodo_modalidad] = (bx, by)
         angulos_modalidades[nodo_modalidad] = angulo_m
 
-# =====================================================
-# ESCALAS VISUALES
-# =====================================================
-
 conteos_generos = list(conteo_generos.values())
 conteos_modalidades = list(conteo_modalidades_por_genero.values())
 
@@ -205,15 +170,7 @@ tamanos_generos = [
     for g in generos
 ]
 
-# =====================================================
-# DIBUJAR
-# =====================================================
-
 fig, ax = plt.subplots(figsize=(22, 22))
-
-# -------------------------
-# ARISTAS
-# -------------------------
 
 anchos_aristas = [
     escalar(
@@ -235,10 +192,6 @@ nx.draw_networkx_edges(
     edge_color="gray"
 )
 
-# -------------------------
-# NODOS INTERNOS: GÉNEROS
-# -------------------------
-
 nx.draw_networkx_nodes(
     G,
     pos,
@@ -246,10 +199,6 @@ nx.draw_networkx_nodes(
     nodelist=generos,
     node_size=tamanos_generos,
 )
-
-# =====================================================
-# BARRAS EXTERNAS
-# =====================================================
 
 modalidades_nodos = [
     n for n in G.nodes
@@ -293,10 +242,6 @@ for nodo in modalidades_nodos:
     rect.set_transform(transformacion)
     ax.add_patch(rect)
 
-# =====================================================
-# ETIQUETAS INTERNAS
-# =====================================================
-
 for genero in generos:
 
     x, y = pos[genero]
@@ -310,10 +255,6 @@ for genero in generos:
         va="center",
         fontweight="bold"
     )
-
-# =====================================================
-# ETIQUETAS EXTERNAS
-# =====================================================
 
 for nodo in modalidades_nodos:
 
@@ -354,10 +295,6 @@ for nodo in modalidades_nodos:
         ha=alineacion,
         va="center"
     )
-
-# =====================================================
-# FINAL
-# =====================================================
 
 limite = radio_barras + largo_max + 3
 

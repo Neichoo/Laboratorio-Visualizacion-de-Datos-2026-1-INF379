@@ -7,18 +7,11 @@ import math
 
 plt.rcParams["font.family"] = "Arial"
 plt.rcParams["font.size"] = 14
-# =========================
-# CARGAR CSV
-# =========================
 
 archivo = "../../data/Encuesta_videojuegos.csv"
 
 df = pd.read_csv(archivo)
 df = df.drop(columns=["Marca temporal"], errors="ignore")
-
-# =========================
-# FUNCION AUXILIAR
-# =========================
 
 def separar_valores(columna):
 
@@ -35,19 +28,11 @@ def separar_valores(columna):
 
     return valores
 
-# =====================================================
-# DATOS
-# =====================================================
-
 col_genero = "¿Género favorito de videojuego?"
 col_aspecto = "¿Aspecto que valoras más en un videojuego?"
 
 lista_generos = separar_valores(df[col_genero])
 lista_aspectos = separar_valores(df[col_aspecto])
-
-# =====================================================
-# CONTAR ASPECTOS POR GÉNERO
-# =====================================================
 
 conteo_genero_aspecto = defaultdict(Counter)
 
@@ -62,15 +47,7 @@ for generos, aspectos in zip(
 
             conteo_genero_aspecto[genero][aspecto] += 1
 
-# =====================================================
-# FIGURA
-# =====================================================
-
 fig, ax = plt.subplots(figsize=(24, 18))
-
-# =====================================================
-# CALCULAR RADIOS SEGÚN FRECUENCIA
-# =====================================================
 
 generos = list(conteo_genero_aspecto.keys())
 
@@ -82,11 +59,6 @@ for genero in generos:
 
     total = sum(aspectos.values())
 
-    # ---------------------------------
-    # RADIO PROPORCIONAL A FRECUENCIA
-    # usando sqrt para mejor percepción visual
-    # ---------------------------------
-
     radio_principal = max(
         3.5,
         min(
@@ -97,18 +69,10 @@ for genero in generos:
 
     radios_generos[genero] = radio_principal
 
-# =====================================================
-# ORDENAR POR TAMAÑO
-# =====================================================
-
 generos.sort(
     key=lambda g: radios_generos[g],
     reverse=True
 )
-
-# =====================================================
-# DISTRIBUCIÓN EN GRILLA
-# =====================================================
 
 n = len(generos)
 
@@ -130,10 +94,6 @@ for idx, genero in enumerate(generos):
 
     posiciones[genero] = (x, y)
 
-# =====================================================
-# CENTRAR GRILLA
-# =====================================================
-
 ancho_total = (columnas - 1) * espaciado_x
 alto_total = (filas - 1) * espaciado_y
 
@@ -145,10 +105,6 @@ for genero in posiciones:
         x - ancho_total / 2,
         y + alto_total / 2
     )
-
-# =====================================================
-# DIBUJAR CADA GÉNERO
-# =====================================================
 
 for genero in generos:
 
@@ -162,10 +118,6 @@ for genero in generos:
 
     radio_principal = radios_generos[genero]
 
-    # =================================================
-    # CÍRCULO PRINCIPAL
-    # =================================================
-
     circulo_principal = Circle(
         (x, y),
         radio_principal,
@@ -173,10 +125,6 @@ for genero in generos:
     )
 
     ax.add_patch(circulo_principal)
-
-    # =================================================
-    # TÍTULO DEL GÉNERO
-    # =================================================
 
     ax.text(
         x,
@@ -187,10 +135,6 @@ for genero in generos:
         fontsize=15,
         weight="bold"
     )
-
-    # =================================================
-    # ASPECTO CENTRAL
-    # =================================================
 
     if len(top_aspectos) == 0:
         continue
@@ -231,10 +175,6 @@ for genero in generos:
         weight="bold"
     )
 
-    # =================================================
-    # ASPECTOS SECUNDARIOS
-    # =================================================
-
     restantes = top_aspectos[1:]
 
     cantidad_restantes = len(restantes)
@@ -267,10 +207,6 @@ for genero in generos:
                 + radio_interno * np.sin(ang_i)
             )
 
-            # ---------------------------------
-            # RADIO SEGÚN FRECUENCIA
-            # ---------------------------------
-
             radio_aspecto = max(
                 0.6,
                 min(
@@ -301,10 +237,6 @@ for genero in generos:
                 va="center",
                 fontsize=11
             )
-
-# =====================================================
-# AJUSTES FINALES
-# =====================================================
 
 margen = 14
 
