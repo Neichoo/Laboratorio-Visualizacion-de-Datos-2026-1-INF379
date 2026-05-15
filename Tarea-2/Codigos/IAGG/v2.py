@@ -60,7 +60,7 @@ for idx, (label, row) in enumerate(ct.iterrows()):
 
 ax.set_xticks(angles[:-1])
 ax.set_xticklabels(labels)
-ax.set_title('Plataforma vs Aspecto', pad=20)
+ax.set_title('Aspectos Valorados por Plataforma de Juego', pad=20)
 ax.set_rlabel_position(30)
 ax.tick_params(axis='x', pad=12)
 ax.tick_params(axis='y', pad=8)
