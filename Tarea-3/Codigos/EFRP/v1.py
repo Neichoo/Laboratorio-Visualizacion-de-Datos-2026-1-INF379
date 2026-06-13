@@ -32,19 +32,61 @@ fig = px.choropleth(
     },
     color_continuous_scale="RdYlGn",
     range_color=(0, 10),
-    title="Critic Score promedio de videojuegos por país"
+    title="Critic Score promedio de videojuegos por país",
+    labels={
+        "critic_score_promedio": "Critic Score promedio"
+    }
 )
 
 fig.update_layout(
-    title_x=0.5,
+    font=dict(
+        family="Arial",
+        size=14
+    ),
+
+    title=dict(
+        text="Critic Score promedio de videojuegos por país",
+        x=0.5,
+        font=dict(
+            family="Arial",
+            size=24
+        )
+    ),
+
     geo=dict(
         showframe=False,
         showcoastlines=True,
         projection_type="natural earth"
     ),
+
     coloraxis_colorbar=dict(
-        title="Critic Score<br>promedio"
-    )
+        title=dict(
+            text="Critic Score<br>promedio",
+            font=dict(
+                family="Arial",
+                size=14
+            )
+        ),
+        tickfont=dict(
+            family="Arial",
+            size=14
+        )
+    ),
+
+    annotations=[
+        dict(
+            text="Fuente: Dataset de videojuegos",
+            x=0,
+            y=-0.08,
+            xref="paper",
+            yref="paper",
+            showarrow=False,
+            font=dict(
+                family="Arial",
+                size=11
+            )
+        )
+    ]
 )
 
 fig.show()
